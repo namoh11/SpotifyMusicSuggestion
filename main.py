@@ -27,22 +27,46 @@ from spotipy.oauth2 import SpotifyOAuth
 #     #print(i, item['track']['name']['artist'])
 #     # vs
 #      print(i, item['track']['name'], "-", item['track']['artists'][0]['name'])
-print()
+
 def getUserInput():
     userInput = input()
     return userInput
+
 def userPlayback(numOfTracks):
-    playbackScope = 'user-read-recently-played'
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=playbackScope))
+    authorizationScope = 'user-read-recently-played'
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=authorizationScope))
     print('Your ' + str(numOfTracks) + ' last listened to tracks: ') # direct cast of track number to a string to concatenate it
     results = sp.current_user_recently_played(limit=numOfTracks, after=None)
     for i, item in enumerate(results['items']):
      print(i + 1, item['track']['name'], "-", item['track']['artists'][0]['name'])
 
+def userTopTracks(numOfTracks):
+    authorizationScope = 'user-top-read'
+    sp = spotipy.Spotify(auth_manager= SpotifyOAuth(scope=authorizationScope))
+    print("Select 1 for the last 4 weeks, 2 for the last 6 months, and 3 for all-time listening")
+    userInput = getUserInput()
+    if userInput == '1':
+        print("Top tracks of the last 4 weeks: ")
+        results = sp.current_user_top_tracks(time_range='short_term', limit=numOfTracks)
+        for i, item in enumerate(results['items']):
+            print(i + 1, item['name'], "-", item['artists'][0]['name'])
+    elif userInput == '2':
+        print("Top tracks of the last 6 months: ")
+        results = sp.current_user_top_tracks(time_range='medium_term', limit=numOfTracks)
+        for i, item in enumerate(results['items']):
+            print(i + 1, item['name'], "-", item['artists'][0]['name'])
+    elif userInput == '3':
+        print("Top tracks of all time: ")
+        results = sp.current_user_top_tracks(time_range='long_term', limit=numOfTracks)
+        for i, item in enumerate(results['items']):
+            print(i + 1, item['name'], "-", item['artists'][0]['name'])
+
+
+
 
 
 def main():
-    print("welcome to this spotify thing. Press 1 to see your track listening history. ") 
+    print("welcome to this spotify thing. Press 1 to see your track listening history, Press 2 to see your top tracks. ") 
     userInput = getUserInput()
     if userInput == '1':
         numOfTracks = int(input("How many tracks do you want to see? "))
@@ -50,7 +74,12 @@ def main():
             userPlayback(numOfTracks)
         else:
             print("Number of tracks must be at least 1, but cannot exceed 50.")
-            
+    if userInput == '2':
+        numOfTracks = int(input("How many tracks do you want to see? "))
+        if ((numOfTracks > 0) and (numOfTracks <= 50)):
+            userTopTracks(numOfTracks)
+        else:
+            print("Number of tracks must be at least 1, but cannot exceed 50.")
 
 
 if __name__ == "__main__":

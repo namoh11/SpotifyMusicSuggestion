@@ -5,7 +5,7 @@ from spotipy.oauth2 import SpotifyOAuth
 '''shows top artists for myself, in 3 different time ranges
 '''
 # topArtistsAndTrackScope = 'user-top-read'
-playbackScope = 'user-read-recently-played'
+#playbackScope = 'user-read-recently-played'
 # ranges = ['short_term', 'medium_term', 'long_term']
 
 # sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=topArtistsAndTrackScope))
@@ -19,15 +19,42 @@ playbackScope = 'user-read-recently-played'
 #         print(i, item['name'])
 #     print()
 # print playback
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=playbackScope)) 
-results = sp.current_user_recently_played(limit=50, after=None, before=None)
-print('Recent Listening')
-results = sp.current_user_recently_played(limit=20, after=None)
-for i, item in enumerate(results['items']):
-    #print(i, item['track']['name']['artist'])
-    # vs
-     print(i, item['track']['name'], "-", item['track']['artists'][0]['name'])
+# sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=playbackScope)) 
+# results = sp.current_user_recently_played(limit=50, after=None, before=None)
+# print('Recent Listening')
+# results = sp.current_user_recently_played(limit=20, after=None)
+# for i, item in enumerate(results['items']):
+#     #print(i, item['track']['name']['artist'])
+#     # vs
+#      print(i, item['track']['name'], "-", item['track']['artists'][0]['name'])
 print()
+def getUserInput():
+    userInput = input()
+    return userInput
+def userPlayback(numOfTracks):
+    playbackScope = 'user-read-recently-played'
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=playbackScope))
+    print('Your ' + str(numOfTracks) + ' last listened to tracks: ') # direct cast of track number to a string to concatenate it
+    results = sp.current_user_recently_played(limit=numOfTracks, after=None)
+    for i, item in enumerate(results['items']):
+     print(i + 1, item['track']['name'], "-", item['track']['artists'][0]['name'])
+
+
+
+def main():
+    print("welcome to this spotify thing. Press 1 to see your track listening history. ") 
+    userInput = getUserInput()
+    if userInput == '1':
+        numOfTracks = int(input("How many tracks do you want to see? "))
+        if ((numOfTracks > 0) and (numOfTracks <= 50)):
+            userPlayback(numOfTracks)
+        else:
+            print("Number of tracks must be at least 1, but cannot exceed 50.")
+            
+
+
+if __name__ == "__main__":
+    main()
 '''
 shows led zeppelin audio samples and cover art for top ten tracks
 '''

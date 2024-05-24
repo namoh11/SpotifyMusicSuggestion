@@ -1,6 +1,6 @@
-# Shows the top artists for a user
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+import sys
 
 '''shows top artists for myself, in 3 different time ranges
 '''
@@ -28,6 +28,33 @@ from spotipy.oauth2 import SpotifyOAuth
 #     # vs
 #      print(i, item['track']['name'], "-", item['track']['artists'][0]['name'])
 
+def menu():
+    print("Welcome to this spotify thing.\nPress 1 to see your track listening history\nPress 2 to see your top tracks.\nPress x to quit. ") 
+    userInput = getUserInput()
+    if userInput == '1':
+        numOfTracks = int(input("How many tracks do you want to see? "))
+        if checkNumberOfTracks(numOfTracks) == True:
+            userPlayback(numOfTracks)
+        else:
+            print("Number of tracks must be at least 1, but cannot exceed 50.\n\n")
+            menu()
+
+    if userInput == '2':
+        numOfTracks = int(input("How many tracks do you want to see? "))
+        if checkNumberOfTracks(numOfTracks):
+            userTopTracks(numOfTracks)
+        else:
+            print("Number of tracks must be at least 1, but cannot exceed 50.\n\n")
+            menu()
+    if userInput == 'x':
+        sys.exit("Goodbye!")
+
+def checkNumberOfTracks(numOfTracks):
+    validNumber = True
+    if ((numOfTracks <= 0) or (numOfTracks > 50)):
+        #print("Number of tracks must be at least 1, but cannot exceed 50.")
+        validNumber = False
+    return validNumber
 def getUserInput():
     userInput = input()
     return userInput
@@ -66,21 +93,7 @@ def userTopTracks(numOfTracks):
 
 
 def main():
-    print("welcome to this spotify thing. Press 1 to see your track listening history, Press 2 to see your top tracks. ") 
-    userInput = getUserInput()
-    if userInput == '1':
-        numOfTracks = int(input("How many tracks do you want to see? "))
-        if ((numOfTracks > 0) and (numOfTracks <= 50)):
-            userPlayback(numOfTracks)
-        else:
-            print("Number of tracks must be at least 1, but cannot exceed 50.")
-    if userInput == '2':
-        numOfTracks = int(input("How many tracks do you want to see? "))
-        if ((numOfTracks > 0) and (numOfTracks <= 50)):
-            userTopTracks(numOfTracks)
-        else:
-            print("Number of tracks must be at least 1, but cannot exceed 50.")
-
+    menu()
 
 if __name__ == "__main__":
     main()

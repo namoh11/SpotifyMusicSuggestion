@@ -46,6 +46,8 @@ def userPlayback(numOfTracks):
     results = sp.current_user_recently_played(limit=numOfTracks, after=None)
     for i, item in enumerate(results['items']):
      print(i + 1, item['track']['name'], "-", item['track']['artists'][0]['name'])
+    print("Returning to menu...\n\n") 
+    menu()
 
 def userTopTracks(numOfTracks):
     authorizationScope = 'user-top-read'
@@ -67,6 +69,9 @@ def userTopTracks(numOfTracks):
         results = sp.current_user_top_tracks(time_range='long_term', limit=numOfTracks)
         for i, item in enumerate(results['items']):
             print(i + 1, item['name'], "-", item['artists'][0]['name'])
+    print("Returning to menu...\n\n") 
+    menu()
+
 def trackSuggestion(numOfTracks): # can actually provide 100 recommendations NOT 50, be sure to handle that 
     authorizationScope = 'user-top-read'
     sp = spotipy.Spotify(auth_manager= SpotifyOAuth(scope=authorizationScope))
@@ -75,11 +80,13 @@ def trackSuggestion(numOfTracks): # can actually provide 100 recommendations NOT
     userInput = getUserInput()
     if userInput == '1':
         timeRange = 'short_term'
-    if userInput ==' 2':
+    elif userInput == '2':
         timeRange = 'medium_term'
-    if userInput == '3':
+    elif userInput == '3':
         timeRange = 'long_term'
+    
     trackURIList = []
+    print(timeRange)
     # generate results
     results = sp.current_user_top_tracks(time_range = timeRange,limit= numOfTracks)
     # iterate through every(?) track and pull only the track uri,
@@ -88,6 +95,18 @@ def trackSuggestion(numOfTracks): # can actually provide 100 recommendations NOT
         trackURIList.append(item['uri'])
     print(trackURIList)
     # call recommendations(seed_tracks = trackURIList, limit= numOfTracks) 
+    recommendedSongs = sp.recommendations(seed_tracks=trackURIList, limit= numOfTracks) 
+    #print(recommendedSongs)
+    # for i, item in enumerate(recommendedSongs['items']):
+    #     print(i + 1, item['track']['name'], "-", item['track']['artists'][0]['name'])
+    # for i, item in enumerate(recommendedSongs.get('tracks', [])):
+    #     track_name = item.get('name', 'Unknown Track')
+    #     artist_name = item['artists'][0]['name'] if item.get('artists') else 'Unknown Artist'
+    #     print(f"{i + 1}: {track_name} - {artist_name}")
+    for i, item in enumerate(recommendedSongs['tracks']):
+            print(i + 1, item['name'], "-", item['artists'][0]['name'])
+    print("Returning to menu...\n\n") 
+    menu()
 
 
 def main():

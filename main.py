@@ -3,6 +3,7 @@ from spotipy.oauth2 import SpotifyOAuth
 import sys
 from dotenv import load_dotenv
 import os
+import random
 
 load_dotenv()  # This loads the variables from the .env file into the environment
 
@@ -93,8 +94,8 @@ def trackSuggestion(numOfTracks): # can actually provide 100 recommendations NOT
     elif userInput == '3':
         timeRange = 'long_term'
     
-    trackURIList = []
-    print(timeRange)
+    trackURIList = [] # container for every uri 
+    revisedTrackURIList = [] # container for 5 randomly sampled uri's from above list
     # generate results
     results = sp.current_user_top_tracks(time_range = timeRange,limit= numOfTracks)
     # iterate through every(?) track and pull only the track uri,
@@ -102,8 +103,11 @@ def trackSuggestion(numOfTracks): # can actually provide 100 recommendations NOT
         # add uri to trackURIList
         trackURIList.append(item['uri'])
     print(trackURIList)
+    randomURI = random.sample(trackURIList, 5)
+    # can only use 5 songs to seed; remove tracks until there's only 5 in list 
+    revisedTrackURIList.extend(randomURI)
     # call recommendations(seed_tracks = trackURIList, limit= numOfTracks) 
-    recommendedSongs = sp.recommendations(seed_tracks=trackURIList, limit= numOfTracks) 
+    recommendedSongs = sp.recommendations(seed_tracks=revisedTrackURIList, limit= numOfTracks) 
     #print(recommendedSongs)
     # for i, item in enumerate(recommendedSongs['items']):
     #     print(i + 1, item['track']['name'], "-", item['track']['artists'][0]['name'])

@@ -1,6 +1,14 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import sys
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # This loads the variables from the .env file into the environment
+
+SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
+SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
+SPOTIPY_REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI')
 def menu():
     print("Welcome to this spotify thing.\nPress 1 to see your track listening history\nPress 2 to see your top tracks.\nPress 3 to see recommended music.\nPress x to quit. ") 
     userInput = getUserInput()

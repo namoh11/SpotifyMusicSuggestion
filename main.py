@@ -61,15 +61,27 @@ def getUserInput():
     userInput = input()
     return userInput
 
+'''
+User Playback
+inputs: 
+    numOfTracks: represents number of songs a user can read of their past listening history
+    - can only return between 1 and 50 tracks
+return:
+    trackDetails: a list of details about a track. included info is order number, title, artist name
+'''
 def userPlayback(numOfTracks):
     authorizationScope = 'user-read-recently-played'
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=authorizationScope))
     print('Your ' + str(numOfTracks) + ' last listened to tracks: ') # direct cast of track number to a string to concatenate it
     results = sp.current_user_recently_played(limit=numOfTracks, after=None)
+    trackDetails = []
     for i, item in enumerate(results['items']):
-     print(i + 1, item['track']['name'], "-", item['track']['artists'][0]['name'])
-    print("Returning to menu...\n\n") 
-    menu()
+        trackDetails.append({
+            'track_number': i + 1,
+            'track_name': item['track']['name'],
+            'artist_name': item['track']['artists'][0]['name']
+        })
+    return trackDetails
 
 def userTopTracks(numOfTracks):
     authorizationScope = 'user-top-read'

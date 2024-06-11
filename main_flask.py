@@ -23,3 +23,14 @@ def display_listening_history():
     numOfTracks = request.args.get('numOfTracks', type=int)
     tracks = userPlayback(numOfTracks)
     return render_template('displayListeningHistory.html', tracks=tracks)
+
+@app.route('/toptracks', methods = ['GET'])
+def top_tracks():
+    return render_template('topTracks.html')
+
+@app.route('/displaytoptracks', methods = ['GET'])
+def display_top_tracks():
+    numOfTracks = request.args.get('numOfTracks', type = int)
+    time_range = request.args.get('time_range', type = string)
+    tracks = userTopTracks(numOfTracks, time_range)
+    return render_template('displayTopTracks.html', tracks = tracks)

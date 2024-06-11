@@ -113,48 +113,38 @@ def userTopTracks(numOfTracks, time_range):
         })
     return trackDetails
 
-def trackSuggestion(numOfTracks): # can actually provide 100 recommendations NOT 50, be sure to handle that 
-    timeRangeDict = {'1': 'short_term', '2': 'medium_term', '3': 'long_term'}
+def trackSuggestion(numOfTracks, time_range):
     authorizationScope = 'user-top-read'
-    sp = spotipy.Spotify(auth_manager= SpotifyOAuth(scope=authorizationScope))
-    print('Recommendations are based off your past listening history. What scope of time do you want your recommendations to be based off of?')
-    print("Select 1 for the last 4 weeks, 2 for the last 6 months, and 3 for all-time.")
-    userInput = getUserInput()
-
-    # check for valid user input for timeRange choice, return to menu() otherwise
-    if str(userInput) in timeRangeDict.keys():
-        timeRange = timeRangeDict[(userInput)]
-    else:
-        print("Given input was not 1, 2, or 3. Try again.\n\n")
-        menu()
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=authorizationScope))
     
-    trackURIList = [] # container for every uri 
-    revisedTrackURIList = [] # container for 5 randomly sampled uri's from above list
-    # generate results
-    results = sp.current_user_top_tracks(time_range = timeRange,limit= numOfTracks)
-    # iterate through every(?) track and pull only the track uri,
+    if time_range == 'Short Term':
+        results = sp.current_user_top_tracks(time_range='short_term', limit=numOfTracks)
+    elif time_range == 'Past 6 months':
+        results = sp.current_user_top_tracks(time_range='medium_term', limit=numOfTracks)
+    elif time_range == 'All time':
+        results = sp.current_user_top_tracks(time_range='long_term', limit=numOfTracks)
+    else:
+        return []  # Return an empty list if the time_range is invalid
+
+    trackURIList = []
+    revisedTrackURIList = []
+
     for item in results['items']:
-        # add uri to trackURIList
         trackURIList.append(item['uri'])
 
-    # print(trackURIList)
-    randomURI = random.sample(trackURIList, 5)
-    # can only use 5 songs to seed; remove tracks until there's only 5 in list 
+    randomURI = random.sample(trackURIList, min(5, len(trackURIList)))
     revisedTrackURIList.extend(randomURI)
-    # call recommendations(seed_tracks = trackURIList, limit= numOfTracks) 
-    recommendedSongs = sp.recommendations(seed_tracks=revisedTrackURIList, limit= numOfTracks) 
-    #print(recommendedSongs)
-    # for i, item in enumerate(recommendedSongs['items']):
-    #     print(i + 1, item['track']['name'], "-", item['track']['artists'][0]['name'])
-    # for i, item in enumerate(recommendedSongs.get('tracks', [])):
-    #     track_name = item.get('name', 'Unknown Track')
-    #     artist_name = item['artists'][0]['name'] if item.get('artists') else 'Unknown Artist'
-    #     print(f"{i + 1}: {track_name} - {artist_name}")
-    for i, item in enumerate(recommendedSongs['tracks']):
-            print(i + 1, item['name'], "-", item['artists'][0]['name'])
-    print("Returning to menu...\n\n") 
-    menu()
 
+    recommendedSongs = sp.recommendations(seed_tracks=revisedTrackURIList, limit=numOfTracks)
+
+    trackDetails = []
+    for i, item in enumerate(recommendedSongs['tracks']):
+        trackDetails.append({
+            'track_number': i + 1,
+            'track_name': item['name'],
+            'artist_name': item['artists'][0]['name']
+        })
+    return trackDetails
 
 def main():
     menu()

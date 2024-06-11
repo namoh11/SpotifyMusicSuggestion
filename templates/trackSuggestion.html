@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Track Suggestion</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Track Suggestion</h1>
+        <form action="/displayTrackSuggestions" method="get">
+            <p>How many tracks do you want to see?</p>
+            <input type="number" id="numOfTracks" name="numOfTracks">
+            
+            <p>Recommendations are based off your past listening history. What scope of time do you want your recommendations to be based off of?</p>
+
+            <input type="radio" id="short_term" name="time_range" value="Short Term">
+            <label for="short_term">Short Term</label><br>
+            <input type="radio" id="past_6_months" name="time_range" value="Past 6 months">
+            <label for="past_6_months">Past 6 Months</label><br>
+            <input type="radio" id="all_time" name="time_range" value="All time">
+            <label for="all_time">All Time</label><br>
+
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>

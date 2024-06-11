@@ -1,4 +1,4 @@
-from main import userPlayback, userTopTracks
+from main import userPlayback, userTopTracks, trackSuggestion
 from flask import Flask ,render_template, request, redirect, url_for
 
 app = Flask(__name__)
@@ -34,3 +34,14 @@ def display_top_tracks():
     time_range = request.args.get('time_range', type = str)
     tracks = userTopTracks(numOfTracks, time_range)
     return render_template('displayTopTracks.html', tracks = tracks)
+
+@app.route('/tracksuggestions', methods=['GET'])
+def track_suggestion():
+    return render_template('trackSuggestion.html')
+
+@app.route('/displayTrackSuggestions', methods = ['GET'])
+def display_track_suggestions():
+    numOfTracks = request.args.get('numOfTracks', type= int)
+    time_range = request.args.get('time_range', type= str)
+    tracks = trackSuggestion(numOfTracks, time_range)
+    return render_template('displayTrackSuggestions.html', tracks = tracks)

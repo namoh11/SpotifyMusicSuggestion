@@ -93,53 +93,25 @@ return:
 '''
 def userTopTracks(numOfTracks, time_range):
     authorizationScope = 'user-top-read'
-    sp = spotipy.Spotify(auth_manager= SpotifyOAuth(scope=authorizationScope))
-    # print("Select 1 for the last 4 weeks, 2 for the last 6 months, and 3 for all-time listening")
-    # userInput = getUserInput()
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=authorizationScope))
 
-    if time_range == 'Short Term':#if userInput == '1':
-        print("Top tracks of the last 4 weeks: ")
+    if time_range == 'Short Term':
         results = sp.current_user_top_tracks(time_range='short_term', limit=numOfTracks)
-        trackDetails = []
-        for i, item in enumerate(results['items']):
-            trackDetails.append({
-            'track_number': i + 1,
-            'track_name': item['track']['name'],
-            'artist_name': item['track']['artists'][0]['name']
-        })
-        return trackDetails
-        # for i, item in enumerate(results['items']):
-        #     print(i + 1, item['name'], "-", item['artists'][0]['name'])
-
-    elif time_range == 'Past 6 months':#elif userInput == '2':
-        print("Top tracks of the last 6 months: ")
+    elif time_range == 'Past 6 months':
         results = sp.current_user_top_tracks(time_range='medium_term', limit=numOfTracks)
-        trackDetails = []
-        for i, item in enumerate(results['items']):
-            trackDetails.append({
-            'track_number': i + 1,
-            'track_name': item['track']['name'],
-            'artist_name': item['track']['artists'][0]['name']
-        })
-        return trackDetails
-        # for i, item in enumerate(results['items']):
-        #     print(i + 1, item['name'], "-", item['artists'][0]['name'])
-
-    elif time_range == 'All time':#elif userInput == '3':
-        print("Top tracks of all time: ")
+    elif time_range == 'All time':
         results = sp.current_user_top_tracks(time_range='long_term', limit=numOfTracks)
-        trackDetails = []
-        for i, item in enumerate(results['items']):
-            trackDetails.append({
+    else:
+        return []  # Return an empty list if the time_range is invalid
+
+    trackDetails = []
+    for i, item in enumerate(results['items']):
+        trackDetails.append({
             'track_number': i + 1,
-            'track_name': item['track']['name'],
-            'artist_name': item['track']['artists'][0]['name']
+            'track_name': item['name'],
+            'artist_name': item['artists'][0]['name']
         })
-        return trackDetails
-    #     for i, item in enumerate(results['items']):
-    #         print(i + 1, item['name'], "-", item['artists'][0]['name'])
-    # print("Returning to menu...\n\n") 
-    # menu()
+    return trackDetails
 
 def trackSuggestion(numOfTracks): # can actually provide 100 recommendations NOT 50, be sure to handle that 
     timeRangeDict = {'1': 'short_term', '2': 'medium_term', '3': 'long_term'}

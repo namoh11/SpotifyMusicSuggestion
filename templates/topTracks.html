@@ -7,17 +7,19 @@
     </head>
     <body>
         <h1>Top Tracks</h1>
-        <form action = "/displaytoptracks">
+        <form action = "/displaytoptracks" method="get">
             <p>How many tracks do you want to see?</p>
             <input type = "number" id = numOfTracks name = "numOfTracks">
             
             <p>What time frame do you want to see tracks from?</p>
-            <input type = "radio" id = "time_range" value="Short Term">
-            <label for="Short Term">Short Term</label><br>
-            <input type = "radio" id = "time_range" value="Past 6 months">
-            <label for="Past 6 Months">Past 6 Months</label><br>
-            <input type = "radio" id = "time_range" value="All time">
-            <label for="All time">All time</label><br>
+
+            <input type="radio" id="short_term" name="time_range" value="Short Term">
+            <label for="short_term">Short Term</label><br>
+            <input type="radio" id="past_6_months" name="time_range" value="Past 6 months">
+            <label for="past_6_months">Past 6 Months</label><br>
+            <input type="radio" id="all_time" name="time_range" value="All time">
+            <label for="all_time">All Time</label><br>
+
             <input type="submit" value="Submit">
         </form>
     </body>

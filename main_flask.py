@@ -1,4 +1,4 @@
-from main import userPlayback
+from main import userPlayback, userTopTracks
 from flask import Flask ,render_template, request, redirect, url_for
 
 app = Flask(__name__)
@@ -31,6 +31,6 @@ def top_tracks():
 @app.route('/displaytoptracks', methods = ['GET'])
 def display_top_tracks():
     numOfTracks = request.args.get('numOfTracks', type = int)
-    time_range = request.args.get('time_range', type = string)
+    time_range = request.args.get('time_range', type = str)
     tracks = userTopTracks(numOfTracks, time_range)
     return render_template('displayTopTracks.html', tracks = tracks)

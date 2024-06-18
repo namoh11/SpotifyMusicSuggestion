@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Listening History</title>
+        <title>Top Tracks</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -10,6 +10,7 @@
         <ul>
             {% for track in tracks %}
                 <li>{{ track.track_number }}. {{ track.track_name }} - {{ track.artist_name }}</li>
+                <img src="{{ track.album_art }}" alt="Album Art" width="100" height="100">
             {% endfor %}
         </ul>
     </body>

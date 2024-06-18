@@ -79,7 +79,8 @@ def userPlayback(numOfTracks):
         trackDetails.append({
             'track_number': i + 1,
             'track_name': item['track']['name'],
-            'artist_name': item['track']['artists'][0]['name']
+            'artist_name': item['track']['artists'][0]['name'],
+            'album_art' : item['track']['album']['images'][0]['url']
         })
     return trackDetails
 
@@ -109,7 +110,9 @@ def userTopTracks(numOfTracks, time_range):
         trackDetails.append({
             'track_number': i + 1,
             'track_name': item['name'],
-            'artist_name': item['artists'][0]['name']
+            'artist_name': item['artists'][0]['name'],
+            #'album_art' : item['track']['album']['images'][0]['url']
+            'album_art': item['album']['images'][0]['url']
         })
     return trackDetails
 
@@ -142,7 +145,9 @@ def trackSuggestion(numOfTracks, time_range):
         trackDetails.append({
             'track_number': i + 1,
             'track_name': item['name'],
-            'artist_name': item['artists'][0]['name']
+            'artist_name': item['artists'][0]['name'],
+            #'album_art' : item['track']['album']['images'][0]['url']  
+            'album_art': item['album']['images'][0]['url']
         })
     return trackDetails
 

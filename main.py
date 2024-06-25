@@ -121,20 +121,21 @@ def userTopArtists(numOfArtists, time_range):
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=authorizationScope))
         
     if time_range == 'Short Term':
-        results = sp.current_user_top_tracks(time_range='short_term', limit=numOfTracks)
+        results = sp.current_user_top_artists(time_range='short_term', limit=numOfArtists)
     elif time_range == 'Past 6 months':
-        results = sp.current_user_top_tracks(time_range='medium_term', limit=numOfTracks)
+        results = sp.current_user_top_artists(time_range='medium_term', limit=numOfArtists)
     elif time_range == 'All time':
-        results = sp.current_user_top_tracks(time_range='long_term', limit=numOfTracks)
+        results = sp.current_user_top_artists(time_range='long_term', limit=numOfArtists)
     else:
         return []  # Return an empty list if the time_range is invalid
         
     artistDetails = []
     for i, item in enumerate(results['items']):
-        artistDetails.appent({
-                'artist_name': item['artist']['name'],
-                'artist_art': item['artist']['images'][0]['url']
-            })
+        artistDetails.append({
+                'artist_name': item['name'],
+                'artist_art': item['images'][0]['url']
+            })            
+    # print(artistDetails)
     return artistDetails
 
 def trackSuggestion(numOfTracks, time_range):
